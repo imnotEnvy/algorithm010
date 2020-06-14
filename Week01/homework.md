@@ -199,3 +199,74 @@ class Solution:
             map_[nums[i]] = i
         return []
 ```
+
+
+# 移动零
+
+[LeetCode.283](https://leetcode-cn.com/problems/move-zeroes/)
+
+**审题**：
+1. 在原数组上进行操作
+2. 保持非0元素的相对顺序（不用管0元素的顺序）
+
+**关键思路**：
+1. 双指针法，一个指针遍历数组，另一个指针记录下一个非0元素需要插入的位置
+
+```python3
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        j = 0
+        for i, x in enumerate(nums):
+            if x != 0:
+                nums[i], nums[j], j = nums[j], nums[i], j + 1
+```
+
+
+# 加一
+
+[LeetCode.66](https://leetcode-cn.com/problems/plus-one/)
+
+**审题**：
+1. 整数组成的非空数组所表示的非负整数
+2. 最高位在数组首位, 并且不会以0开头
+3. 每位仅存储一个数字
+
+**关键思路**：
+
+
+```python3
+
+# 反转数组
+class Solution:
+    def plusOne(self, digits: List[int]) -> List[int]:
+        digits_reversed = digits[::-1]
+        flag = 0
+
+        for i, x in enumerate(digits_reversed):
+            if i == 0:
+                x += 1
+            x += flag
+            flag, x = divmod(x, 10)
+            digits_reversed[i] = x
+        if flag > 0:
+            digits_reversed.append(flag)
+
+        return digits_reversed[::-1]
+
+
+# 从后往前遍历
+class Solution:
+    def plusOne(self, digits: List[int]) -> List[int]:
+        # traverse from right to left
+        for i in range(len(digits) - 1, -1, -1):
+            digits[i] += 1
+            digits[i] = digits[i] % 10
+            if digits[i] != 0:
+                return digits
+
+        digits.insert(0, 1)
+        return digits
+```
