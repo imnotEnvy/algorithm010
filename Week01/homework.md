@@ -8,10 +8,10 @@
 - [x] 合并两个有序链表（亚马逊、字节跳动在半年内面试常考）
 - [x] 合并两个有序数组（Facebook 在半年内面试常考）
 - [x] 两数之和（亚马逊、字节跳动、谷歌、Facebook、苹果、微软在半年内面试中高频常考）
-- [ ] 移动零（Facebook、亚马逊、苹果在半年内面试中考过）
-- [ ] 加一（谷歌、字节跳动、Facebook 在半年内面试中考过）
+- [x] 移动零（Facebook、亚马逊、苹果在半年内面试中考过）
+- [x] 加一（谷歌、字节跳动、Facebook 在半年内面试中考过）
 中等：
-- [ ] 设计循环双端队列（Facebook 在 1 年内面试中考过）
+- [x] 设计循环双端队列（Facebook 在 1 年内面试中考过）
 困难：
 - [ ] 接雨水（亚马逊、字节跳动、高盛集团、Facebook 在半年内面试常考）
 
@@ -269,4 +269,112 @@ class Solution:
 
         digits.insert(0, 1)
         return digits
+```
+
+
+# 设计循环双端队列
+
+[LeetCode.641](https://leetcode-cn.com/problems/design-circular-deque/)
+
+**审题**：
+1. 双端队列为空返回-1
+
+**关键思路**：
+1. 熟练实现代码，如果出现问题，调试比较不方便
+2. 多用一位空间来表示front指向位置
+
+```python3
+class MyCircularDeque:
+
+    def __init__(self, k: int):
+        """
+        Initialize your data structure here. Set the size of the deque to be k.
+        """
+        self._queue = [-1 for _ in range(k + 1)]
+        self._front = 0
+        self._rear = 0
+        self._size = k + 1
+
+    def _move(self, start, offset):
+        return (start + offset) % self._size
+
+    def insertFront(self, value: int) -> bool:
+        """
+        Adds an item at the front of Deque. Return true if the operation is successful.
+        """
+        if self.isFull():
+            return False
+        self._queue[self._front], self._front = value, self._move(self._front, -1)
+        return True
+
+    def insertLast(self, value: int) -> bool:
+        """
+        Adds an item at the rear of Deque. Return true if the operation is successful.
+        """
+        if self.isFull():
+            return False
+        _position = self._move(self._rear, 1)
+        self._queue[_position], self._rear = value, _position
+        return True
+
+
+    def deleteFront(self) -> bool:
+        """
+        Deletes an item from the front of Deque. Return true if the operation is successful.
+        """
+        if self.isEmpty():
+            return False
+        self._front = self._move(self._front, 1)
+        return True
+
+    def deleteLast(self) -> bool:
+        """
+        Deletes an item from the rear of Deque. Return true if the operation is successful.
+        """
+        if self.isEmpty():
+            return False
+        self._rear = self._move(self._rear, -1)
+        return True
+
+    def getFront(self) -> int:
+        """
+        Get the front item from the deque.
+        """
+        if self.isEmpty():
+            return -1
+        return self._queue[self._move(self._front, 1)]
+
+
+    def getRear(self) -> int:
+        """
+        Get the last item from the deque.
+        """
+        if self.isEmpty():
+            return -1
+        return self._queue[self._rear]
+
+    def isEmpty(self) -> bool:
+        """
+        Checks whether the circular deque is empty or not.
+        """
+        return self._front == self._rear
+
+    def isFull(self) -> bool:
+        """
+        Checks whether the circular deque is full or not.
+        """
+        return self._move(self._rear, 1) == self._front
+
+
+
+# Your MyCircularDeque object will be instantiated and called as such:
+# obj = MyCircularDeque(k)
+# param_1 = obj.insertFront(value)
+# param_2 = obj.insertLast(value)
+# param_3 = obj.deleteFront()
+# param_4 = obj.deleteLast()
+# param_5 = obj.getFront()
+# param_6 = obj.getRear()
+# param_7 = obj.isEmpty()
+# param_8 = obj.isFull()
 ```
