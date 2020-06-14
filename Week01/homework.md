@@ -13,7 +13,7 @@
 中等：
 - [x] 设计循环双端队列（Facebook 在 1 年内面试中考过）
 困难：
-- [ ] 接雨水（亚马逊、字节跳动、高盛集团、Facebook 在半年内面试常考）
+- [x] 接雨水（亚马逊、字节跳动、高盛集团、Facebook 在半年内面试常考）
 
 
 # Deque代码修改
@@ -280,7 +280,7 @@ class Solution:
 1. 双端队列为空返回-1
 
 **关键思路**：
-1. 熟练实现代码，如果出现问题，调试比较不方便
+1. 熟练实现代码和细节，如果出现问题，调试比较不方便，容易浪费时间 :-(
 2. 多用一位空间来表示front指向位置
 
 ```python3
@@ -377,4 +377,65 @@ class MyCircularDeque:
 # param_6 = obj.getRear()
 # param_7 = obj.isEmpty()
 # param_8 = obj.isFull()
+```
+
+
+# 接雨水
+
+[LeetCode.42](https://leetcode-cn.com/problems/trapping-rain-water/)
+
+**审题**：
+1. 非负整数，每个柱子的宽度为1
+2.
+
+**关键思路**：
+
+单调栈
+1. 遇到较高的柱子的时候, 弹出栈顶, 进行处理
+
+双指针
+1. 对于某一处的柱子，它能积水的量取决于它左边柱子中最高的柱子和右边柱子中最高的柱子中较矮的一个。
+2. 从头遍历数组到某一处的柱子，此时left_max是已知的，如果left_max < right_max, 则可以计算当前可积水量为 left_max - 当前高度
+3. 从尾遍历数组到某一处的柱子，此时right_max是已知的，如果right_max < left_max，则可以计算当前可积水量为right_max - 当前高度
+
+单调栈
+
+```python3
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        if len(height) < 2: return 0
+        stack, result = [], 0
+        PEAK = -1  # semantic index
+
+        for i in range(1, len(height)):
+            while len(stack) > 0 and height[i] >= height[stack[PEAK]]:
+                top = stack.pop()
+                if len(stack) == 0:
+                    break
+                w = i - stack[PEAK] - 1
+                h = min(height[i], height[stack[PEAK]]) - height[top]
+                result += w * h
+            stack.append(i)
+        return result
+```
+
+双指针
+
+```python3
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        if height is None or len(height) < 3: return 0
+
+        left_max, right_max = height[0], height[-1]
+        p_left, p_right = 1, len(height) - 2
+        result = 0
+
+        while p_left <= p_right:
+            if left_max <= right_max:
+                result += max(0, left_max - height[p_left])
+                p_left, left_max = p_left + 1, max(left_max, height[p_left])
+            else:
+                result += max(0, right_max - height[p_right])
+                p_right, right_max = p_right - 1, max(right_max, height[p_right])
+        return result
 ```
