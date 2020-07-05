@@ -12,7 +12,7 @@
 关键思路：
 1. 后序遍历二叉树，判断节点是否在二叉树的左右子树中
 2. 定义子问题：左右子树分别包括p, q, 或者节点本身等于p或者q
-
+ss://YWVzLTI1Ni1nY206ZFhDdkJUNnpKckBjMTBzMS5qYW1qYW1zLm5ldDo2MzU3OA==#JMS-206838@c10s1.jamjams.net:63578
 ```python3
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
