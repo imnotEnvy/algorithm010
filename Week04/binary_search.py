@@ -3,7 +3,6 @@ arr2 = [6, 7, 8, 1, 2, 3, 4, 5]
 
 
 def find_point(arr):
-
     left = 0
     right = len(arr) - 1
 
