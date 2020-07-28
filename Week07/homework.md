@@ -4,7 +4,7 @@
 中等
 - [x] 实现 Trie (前缀树) （亚马逊、微软、谷歌在半年内面试中考过）
 - [x]朋友圈（亚马逊、Facebook、字节跳动在半年内面试中考过）
-- [ ]岛屿数量（近半年内，亚马逊在面试中考查此题达到 361 次）
+- [x]岛屿数量（近半年内，亚马逊在面试中考查此题达到 361 次）
 - [ ]被围绕的区域（亚马逊、eBay、谷歌在半年内面试中考过）
 - [ ]有效的数独（亚马逊、苹果、微软在半年内面试中考过）
 - [ ]括号生成（亚马逊、Facebook、字节跳动在半年内面试中考过）
@@ -101,4 +101,80 @@ class Solution:
         while p[i] != i: # 路径压缩 ?
             x = i; i = p[i]; p[x] = root
         return root
+```
+
+# 岛屿数量
+
+错误记录：(调试了才发现错误)
+二维数组坐标 对于 单个数组的下标
+(i, j) -> i * n_col + j
+X: (i, j) -> i * n_row + j
+
+```python3
+#
+# @lc app=leetcode.cn id=200 lang=python3
+#
+# [200] 岛屿数量
+#
+# @lc code=start
+from typing import List
+
+
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        if not grid: return 0
+
+        m = len(grid)
+        n = len(grid[0])
+
+        disju_set = DisjointUnionSet(m * n)
+
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == '1':
+                    for di, dj in [(-1, 0), (0, -1), (1, 0), (0, 1)]:
+                        _i, _j = i + di, j + dj
+                        if 0 <= _i < m and 0 <= _j < n and grid[_i][_j] == '1':
+                            disju_set.union(n * _i + _j, n * i + j)
+
+        islands = set()
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == '1':
+                    islands.add(disju_set.find(n * i + j))
+
+        return len(islands)
+
+# @lc code=end
+
+class DisjointUnionSet(object):
+
+    def __init__(self, n) -> None:
+        self.rank = [0] * n
+        self.parent = [i for i in range(n)]
+        self.n = n
+
+    def find(self, x):
+        try:
+            if self.parent[x] != x:
+                return self.find(self.parent[x])
+            return x
+        except:
+            print(x)
+            raise Exception
+
+    def union(self, x, y):
+        x_root = self.find(x)
+        y_root = self.find(y)
+
+        if x_root == y_root:
+            return
+
+        if self.rank[x_root] < self.rank[y_root]:
+            self.parent[x_root] = y_root
+        elif self.rank[x_root] > self.rank[y_root]:
+            self.parent[y_root] = x_root
+        else:
+            self.parent[x_root] = y_root
+            self.rank[y_root] += 1
 ```

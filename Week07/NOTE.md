@@ -43,7 +43,6 @@ class Trie(object):
 
 代码模版:
 ```python
-
 def init(p):
 	# for i = 0 .. n: p[i] = i;
 	p = [i for i in range(n)]
@@ -60,7 +59,41 @@ def parent(self, p, i):
 	while p[i] != i: # 路径压缩 ?
 		x = i; i = p[i]; p[x] = root
 	return root
+```
 
+类模版
+```python
+
+class DisjointUnionSet(object):
+
+    def __init__(self, n) -> None:
+        self.rank = [0] * n
+        self.parent = [i for i in range(n)]
+        self.n = n
+
+    def find(self, x):
+        try:
+            if self.parent[x] != x:
+                return self.find(self.parent[x])
+            return x
+        except:
+            print(x)
+            raise Exception
+
+    def union(self, x, y):
+        x_root = self.find(x)
+        y_root = self.find(y)
+
+        if x_root == y_root:
+            return
+
+        if self.rank[x_root] < self.rank[y_root]:
+            self.parent[x_root] = y_root
+        elif self.rank[x_root] > self.rank[y_root]:
+            self.parent[y_root] = x_root
+        else:
+            self.parent[x_root] = y_root
+            self.rank[y_root] += 1
 ```
 
 # 高级搜索
