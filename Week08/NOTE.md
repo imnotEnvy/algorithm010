@@ -164,6 +164,19 @@ def bubble_sort(arr):
                 arr[j], arr[j+1] = arr[j + 1], arr[j]
     return arr
 
+# 选择排序
+def select_sort(arr):
+    size = len(arr)
+
+    for i in range(0, size - 1):
+        min_idx = i
+        for j in range(i + 1, size):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+
+        arr[min_idx], arr[i] = arr[i], arr[min_idx]
+
+    return arr
 
 # 比较计数排序
 def compare_and_count_sort(arr):
