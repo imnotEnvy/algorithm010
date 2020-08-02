@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../kyoumogo"
+		},
+		{
+			"path": "../algorithms/CommonAlgorithms"
+		}
+	],
+	"settings": {}
+}
