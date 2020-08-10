@@ -105,3 +105,34 @@ class Solution:
                 return checkPalindrome(low + 1, high) or checkPalindrome(low, high - 1)
         return True
 ```
+
+# 同构字符串
+
+[leetcode](https://leetcode-cn.com/problems/isomorphic-strings/)
+
+```python3
+
+
+```
+
+# 最长有效括号
+
+[leetcode](https://leetcode-cn.com/problems/longest-valid-parentheses/)
+
+```python3
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+
+        ans, stack = 0, [-1]
+
+        for i in range(len(s)):
+            if s[i] == '(':
+                stack.append(i)
+            elif s[i] == ')':
+                stack.pop()
+                if len(stack) == 0:
+                    stack.append(i)
+                else:
+                    ans = max(ans, i - stack[-1])
+        return ans
+```
